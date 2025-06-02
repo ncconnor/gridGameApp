@@ -70,15 +70,15 @@ This project is implemented in **Node.js** using **TypeScript**. It uses Express
 curl -X POST http://localhost:3000/api/games 
 
 ### Make a Move - valid moves are up, down, left, right:
-curl -X POST http://localhost:3000/api/games/<GameId>/move \
+curl -X POST http://localhost:3000/api/games/{GameId}/move \
   -H "Content-Type: application/json" \
   -d '{"direction":"right"}'
 
 ### Save Game:
-curl -X POST http://localhost:3000/api/game/<GameId>
+curl -X POST http://localhost:3000/api/game/{GameId}
 
 ### Load Game:
-curl -X GET http://localhost:3000/api/game/<GameId>
+curl -X GET http://localhost:3000/api/game/{GameId}
 
 ### Retrieve player stats:
-curl -X GET http://localhost:3000/api/game/<GameId>/player
+curl -X GET http://localhost:3000/api/game/{GameId}/player
