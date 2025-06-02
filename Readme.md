@@ -8,13 +8,14 @@ This project is implemented in **Node.js** using **TypeScript**. It uses Express
 
 ## Features
 - Create new games with randomly generated 50x50 grid
-- Save and load game progress*
+- Save and load game progress
 - Move up, down, left or right
 - Each location on the grid - a Cell - has a specific effect that impacts health and moves
 - Tracks current state - win/lose
 - Player starts at a random spot on one side of the grid and must move to a randomly selected end point on the other side of the grid.
 - The current state of the grid will show the current position and the type/effect of surrounding locations/cells
 
+Notes:
 * Current implementation uses an in-memory persistence layer for saving and loading games.
 
 ## API Endpoints
