@@ -10,6 +10,10 @@ import { GameStateRepository } from "../repositories/game-state.repository";
 import { InMemoryGameStateRepository } from "../repositories/in-memory-game-state.repository";
 
 
+const ERROR_GAME_NOT_FOUND = 'Game not found';
+const ERROR_GAME_OVER = 'Game is already completed';
+const ERROR_INVALID_MOVE = 'Invalid move';
+
 export class GameService {
   private repository: GameStateRepository;
 
@@ -57,10 +61,10 @@ export class GameService {
   makeMove(gameId: string, move: Move): GameState {
     const gameState = this.loadGame(gameId);
     if (!gameState) {
-      throw new GameError('Game not found', 'GAME_NOT_FOUND');
+      throw new GameError(ERROR_GAME_NOT_FOUND, 'GAME_NOT_FOUND');
     }
     if (gameState.gameOver) {
-      throw new GameError('Game is already completed', 'GAME_OVER', gameState);
+      throw new GameError(ERROR_GAME_OVER, 'GAME_OVER', gameState);
     }
 
     const [row, col] = gameState.player.position;
@@ -75,7 +79,7 @@ export class GameService {
     }
 
     if (!this.isValidPosition(gameState, [newRow, newCol])) {
-      throw new GameError('Invalid move', 'INVALID_MOVE');
+      throw new GameError(ERROR_INVALID_MOVE, 'INVALID_MOVE');
     }
 
     const cell = gameState.grid[newRow][newCol];
@@ -132,7 +136,6 @@ export class GameService {
     gameState.grid[row][col].visible = true;
 
     // up, down, left, right
-    
     const moves: [number, number][] = [[-1,0], [1,0], [0,-1], [0,1]];
 
     for (const [dr, dc] of moves) {

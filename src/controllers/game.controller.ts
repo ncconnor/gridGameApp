@@ -5,6 +5,14 @@ import { sanitizeGameState } from '../utils/sanitize-game-state.util';
 import { ErrorResponse } from '../models/error-response.model';
 import { GameError } from '../models/error-response.model';
 
+const ERROR_GAME_NOT_FOUND = 'Game not found';
+const ERROR_INVALID_MOVE = 'Invalid move';
+const ERROR_FAILED_CREATE = 'Failed to create a new game';
+const ERROR_FAILED_SAVE = 'Failed to save the game';
+const ERROR_FAILED_LOAD = 'Failed to load the game';
+const ERROR_INTERNAL = 'Internal server error';
+const MESSAGE_GAME_SAVED = 'Game saved successfully';
+
 export class GameController {
   constructor(private gameService: GameService) {}
 
@@ -14,7 +22,7 @@ export class GameController {
       res.status(201).json(sanitizeGameState(gameState));
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Failed to create a new game' });
+      res.status(500).json({ error: ERROR_FAILED_CREATE });
     }
   }
 
@@ -23,13 +31,13 @@ export class GameController {
       const gameId = req.params.id;
       const gameState = this.gameService.loadGame(gameId);
       if (!gameState) {
-        return res.status(404).json({ error: 'Game not found' });
+        return res.status(404).json({ error: ERROR_GAME_NOT_FOUND });
       }
       this.gameService.saveGame(gameState);
-      res.status(200).json({ message: 'Game saved successfully' });
+      res.status(200).json({ message: MESSAGE_GAME_SAVED });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Failed to save the game' });
+      res.status(500).json({ error: ERROR_FAILED_SAVE });
     }
   }
 
@@ -38,12 +46,12 @@ export class GameController {
       const gameId = req.params.id;
       const gameState = this.gameService.loadGame(gameId);
       if (!gameState) {
-        return res.status(404).json({ error: 'Game not found' });
+        return res.status(404).json({ error: ERROR_GAME_NOT_FOUND });
       }
       res.status(200).json(sanitizeGameState(gameState));
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Failed to load the game' });
+      res.status(500).json({ error: ERROR_FAILED_LOAD });
     }
   }
 
@@ -53,7 +61,7 @@ export class GameController {
       const move = req.body.move as Move;
 
       if (!MOVES.includes(move)) {
-        const errorResponse: ErrorResponse = { error: 'Invalid move', code: 'INVALID_MOVE' };
+        const errorResponse: ErrorResponse = { error: ERROR_INVALID_MOVE, code: 'INVALID_MOVE' };
         return res.status(400).json(errorResponse);
       }
 
@@ -66,21 +74,21 @@ export class GameController {
         }
         return res.status(400).json({ error: error.message, code: error.code });
       }
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ error: ERROR_INTERNAL });
     }
   }
 
   public playerStats = async (req: Request, res: Response) => {
-     try {
+    try {
       const gameId = req.params.id;
       const gameState = this.gameService.loadGame(gameId);
       if (!gameState) {
-        return res.status(404).json({ error: 'Game not found' });
+        return res.status(404).json({ error: ERROR_GAME_NOT_FOUND });
       }
       res.status(200).json(gameState.player);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Failed to load the game' });
+      res.status(500).json({ error: ERROR_FAILED_LOAD });
     }
   }
 }

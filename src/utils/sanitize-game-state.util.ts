@@ -1,9 +1,11 @@
 import { GameState } from "../models/game-state.model";
 
+const HIDDEN_CELL_TYPE = 'Hidden';
+
 export function sanitizeGameState(gameState: GameState): any {
   const grid = gameState.grid.map(row =>
     row.map(cell => ({
-      type: cell.visible ? cell.type : 'Hidden',
+      type: cell.visible ? cell.type : HIDDEN_CELL_TYPE,
       visible: cell.visible
     }))
   );
