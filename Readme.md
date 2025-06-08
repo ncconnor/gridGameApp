@@ -78,10 +78,10 @@ curl -X POST http://localhost:3000/api/games/{GameId}/move \
   -d '{"direction":"right"}'
 
 ### Save Game:
-curl -X POST http://localhost:3000/api/game/{GameId}
+curl -X POST http://localhost:3000/api/games/{GameId}/save
 
 ### Load Game:
-curl -X GET http://localhost:3000/api/game/{GameId}
+curl -X GET http://localhost:3000/api/games/{GameId}
 
 ### Retrieve player stats:
-curl -X GET http://localhost:3000/api/game/{GameId}/player
+curl -X GET http://localhost:3000/api/games/{GameId}/player
